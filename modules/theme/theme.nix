@@ -17,21 +17,22 @@ in
     };
 
     name = mkOption {
-      type = types.enum [ "catppuccin" "nightfox" "onedark" "rose-pine" "tokyonight" ];
-      default = "onedark";
-      description = ''Name of theme to use: "catppuccin" "nightfox" "onedark" "rose-pine" "tokyonight"'';
+      type = types.enum [ "catppuccin" "nightfox" "onedark" "rose-pine" "tokyonight" "gruvbox" ];
+      default = "gruvbox";
+      description = ''Name of theme to use: "catppuccin" "nightfox" "onedark" "rose-pine" "tokyonight" "gruvbox"'';
     };
 
     style = mkOption {
       type =
         let
+          gb = enum' "gruvbox" ["dark" "light"];
           tn = enum' "tokyonight" [ "day" "night" "storm" ];
           od = enum' "onedark" [ "dark" "darker" "cool" "deep" "warm" "warmer" ];
           nf = enum' "nightfox" [ "nightfox" "carbonfox" "duskfox" "terafox" "nordfox" ];
           rp = enum' "rose-pine" [ "main" "moon" "dawn" ];
           cp = types.enum [ "frappe" "latte" "macchiato" "mocha" ];
         in
-        tn (od (nf (rp cp)));
+        gb (tn (od (nf (rp cp))));
       description = ''Theme style: "storm", darker variant "night", and "day"'';
     };
 
@@ -59,6 +60,7 @@ in
         (withPlugins (cfg.name == "onedark") [ onedark ]) ++
         (withPlugins (cfg.name == "tokyonight") [ tokyonight ]) ++
         (withPlugins (cfg.name == "rose-pine") [ rosepine ]) ++
+        (withPlugins (cfg.name == "gruvbox") [gruvbox]) ++
         (withPlugins (cfg.name == "catppuccin") [ catppuccin ])
       );
 
@@ -102,6 +104,15 @@ in
             dim_nc_background = "${transparency}",
           }
           vim.cmd [[colorscheme rose-pine]]
+        ''
+        }
+
+         ${writeIf (cfg.name == "gruvbox") ''
+          -- Gruvbox theme
+          require('gruvbox').setup {
+          }
+          vim.o.background = "${cfg.style}"
+          vim.cmd [[colorscheme gruvbox]]
         ''
         }
       '';

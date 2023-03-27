@@ -60,13 +60,13 @@ let
       };
       statusline.lualine = {
         enable = true;
-        theme = "onedark";
+        theme = "gruvbox";
       };
       theme = {
         enable = true;
-        name = "onedark";
-        style = "deep";
-        transparency = true;
+        name = "gruvbox";
+        style = "dark";
+        transparency = false;
       };
       autopairs.enable = true;
       neoclip.enable = true;
